@@ -1,0 +1,66 @@
+<head>
+    <title>Time for Blogs</title>
+
+    <style>
+        #body {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            left: 0;
+            margin: 0;
+
+        }
+
+        #header {
+            background: lightblue;
+            height: 60px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            bottom: 0;
+        }
+
+        #footer {
+            position: absolute;
+            text-align: center;
+            width: 100%;
+            bottom: 0;
+            background: lightblue;
+            height: 30px;
+        }
+
+        #react-app {
+            padding-top: 50px;
+            margin-left: 20px;
+        }
+
+        #body button {
+            cursor: pointer;
+        }
+
+        #body .button-container {
+            display: none;
+        }
+        #body ul li:hover .button-container {
+            display: block;
+            position: relative;
+        }
+    </style>
+</head>
+
+<body id='body'>
+    <div class='main-container'>
+        <header id="header">
+            <h2>Salesforce blogs</h2>
+        </header>
+        <div id='react-app'>
+        </div>
+
+    </div>
+    <footer id="footer">(C) Salesforce blogs</footer>
+    </div>
+    <script type="text/javascript" src="/dist/app.bundle.js"></script>
+</body>
+
+</html>

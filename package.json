@@ -1,0 +1,29 @@
+{
+  "name": "salesforce_blogs",
+  "version": "1.0.0",
+  "description": "A test application",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --config webpack.config.js",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.16.2",
+    "prop-types": "^15.6.1",
+    "react-router-dom": "^4.2.2"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-modal": "^3.4.5",
+    "webpack": "^4.12.0",
+    "webpack-cli": "^2.1.5"
+  },
+  "keywords": [],
+  "author": "Tukuna Patro",
+  "license": "ISC"
+}
