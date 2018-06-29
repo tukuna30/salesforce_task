@@ -3,12 +3,13 @@ import BlogsAPI from '../api/blogsApi';
 import BlogDetails from '../components/blogDetails';
 import CreateBlog from '../components/createBlog';
 import EditBlog from '../components/EditBlog';
+import DeleteBlog from '../components/deleteBlog';
 import Modal from 'react-modal';
 
 class App extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { blogs: [], selectedBlogId: '', showBlogCreateDialog: false };
+        this.state = { blogs: [], selectedBlogId: '', showBlogCreateDialog: false, showDeleteDialog :false };
         this.selectBlog = this.selectBlog.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.showBlogCreateDialog = this.showBlogCreateDialog.bind(this);
@@ -27,8 +28,13 @@ class App extends React.Component {
             this.setState({ selectedBlogId: event.target.id })
         }
     }
-    closeModal() {
-        this.setState({ showBlogCreateDialog: false, showBlogEditDialog: false });
+    closeModal(isReload) {
+        if (isReload) {
+            BlogsAPI.getBlogs().then((response) => {
+                this.setState({ blogs: response, selectedBlogId: response[0].id });
+            });
+        }
+        this.setState({ showBlogCreateDialog: false, showBlogEditDialog: false, showDeleteDialog: false });
     }
 
     showBlogCreateDialog() {
@@ -39,12 +45,15 @@ class App extends React.Component {
         this.setState({ showBlogEditDialog: true, selectedBlogId: blogId });
     }
 
+    showDeleteDialog(blogId) {
+        this.setState({ showDeleteDialog: true, selectedBlogId: blogId });
+    }
     render() {
         return (
             <div style={{ paddingTop: '20px', marginTop: '20px' }}>
                 <button onClick={this.showBlogCreateDialog}>Create a blog</button>
                 <h3>Total blogs: {this.state.blogs.length}</h3>
-                <div style={{ maxHeight: '600px', overflowY: 'auto', display: 'flex' }}>
+                <div style={{ maxHeight: '600px', overflowY: 'auto', display: 'flex', padding: '10px' }}>
                     <ul style={{ overflowY: 'auto', marginTop: '0px', width: '30%' }} id="list-container">
 
                         {this.state.blogs.map((blog, index) =>
@@ -54,15 +63,15 @@ class App extends React.Component {
                                     <button style={{marginRight: '5px'}} onClick={() => {
                                         this.showBlogEditDialog(blog.id)
                                     }}>Edit</button>
-                                    <button onClick={() => { this.showBlogDeleteDialog(blog.id) }}>Delete</button>
+                                    <button onClick={() => { this.showDeleteDialog(blog.id) }}>Delete</button>
                                 </div>
                             </li>
                         )}
                     </ul>
-                    {this.state.blogs[0] && <BlogDetails blogId={this.state.selectedBlogId} style={{ width: '70%' }} />}
+                    {this.state.selectedBlogId && <BlogDetails blogId={this.state.selectedBlogId} style={{ width: '70%' }} />}
                 </div>
                 <Modal
-                    isOpen={this.state.showBlogCreateDialog || this.state.showBlogEditDialog}
+                    isOpen={this.state.showBlogCreateDialog || this.state.showBlogEditDialog || this.state.showDeleteDialog}
                     onRequestClose={this.closeModal}
                     ariaHideApp={false}
                     style={{
@@ -76,6 +85,7 @@ class App extends React.Component {
                     </div>
                     {this.state.showBlogCreateDialog && <CreateBlog closeCallBack={this.closeModal} />}
                     {this.state.showBlogEditDialog && <EditBlog blogId={this.state.selectedBlogId} closeCallBack={this.closeModal} />}
+                    {this.state.showDeleteDialog && <DeleteBlog blogId={this.state.selectedBlogId} closeCallBack={this.closeModal} onDeleteCallBack={this.closeModal}/>}
                 </Modal>
             </div>
 

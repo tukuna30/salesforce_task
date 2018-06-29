@@ -10,18 +10,11 @@ class CreateBlog extends React.Component {
         this.handleInputChange = this.handleInputChange.bind(this);
     }
 
-    componentDidMount() {
-        let self = this;
-        BlogsAPI.getBlog(this.props.blogId).then(function (blog) {
-            self.setState({ blog });
-        });
-    }
-
     createBlog() {
         let self = this;
         let payload = { title: this.state.blogTitle, text: this.state.blogText };
         BlogsAPI.createBlog(payload).then(function (blog) {
-            self.props.closeCallBack();
+            self.props.closeCallBack(true);
         }, function () {
             self.props.closeCallBack();
         });

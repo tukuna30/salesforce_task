@@ -1,13 +1,11 @@
 let callAPI = (url, method, payload) => {
     let options = {
-        cache: 'no-cache',
-        referrer: 'no-referrer',
-        redirect: 'follow',
-        method: method || 'GET'
+        method: method || 'GET',
     };
 
     if (method === 'POST' && payload) {
-        options.body = JSON.stringify(payload);
+        options.headers = {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'};
+        options.body = `title=${payload.title}&text=${payload.text}`;
     }
     return fetch(url, options)
         .then(response => response.json())
@@ -19,14 +17,23 @@ let blogUrl = 'http://restedblog.herokuapp.com/shubham/api/';
 
 class BlogsAPI {
     static getBlogs() {
-        return callAPI(blogUrl);
+        return callAPI(blogUrl).then((blogs) => {
+            return blogs.sort((a, b) => {
+                if (a.id > b.id) {
+                    return -1;
+                }
+                else {
+                    return 1;
+                }
+            });
+        });
     }
 
     static getBlog(blogId) {
         return callAPI(blogUrl + blogId);
     }
-    static updateBlog(blogId) {
-        return callAPI(blogUrl + blogId, 'POST');
+    static updateBlog(blogId, payload) {
+        return callAPI(blogUrl + blogId, 'POST', payload);
     }
     static createBlog(blogData) {
         return callAPI(blogUrl, 'POST', blogData);

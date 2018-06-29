@@ -13,7 +13,7 @@ class EditBlog extends React.Component {
     componentDidMount() {
         let self = this;
         BlogsAPI.getBlog(this.props.blogId).then(function (blog) {
-            self.setState({ blog, blogTitle: blog.title, blogText: blog.blogText});
+            self.setState({ blog, blogTitle: blog.title, blogText: blog.text});
         });
     }
 
@@ -21,7 +21,7 @@ class EditBlog extends React.Component {
         let self = this;
         let payload = { title: this.state.blogTitle, text: this.state.blogText };
         BlogsAPI.updateBlog(this.props.blogId, payload).then(function (blog) {
-            self.props.closeCallBack();
+            self.props.closeCallBack(true);
         }, function () {
             self.props.closeCallBack();
         });
